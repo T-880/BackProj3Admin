@@ -2,6 +2,47 @@ if (!getToken()) {
   window.location.href = "login.html";
 }
 
+window.addEventListener("DOMContentLoaded", () => {
+  loadMenu();
+
+  const form = document.getElementById("createForm");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const token = getToken();
+
+    const newItem = {
+      title: document.getElementById("title").value,
+      description: document.getElementById("description").value,
+      price: document.getElementById("price").value,
+      category: "pizza"
+    };
+
+    try {
+      const res = await fetch("http://localhost:5000/api/menu", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token
+        },
+        body: JSON.stringify(newItem)
+      });
+
+      if (!res.ok) {
+        throw new Error("Kunde inte skapa objekt");
+      }
+
+      form.reset();
+      loadMenu();
+
+    } catch (err) {
+      console.error("CREATE error:", err);
+    }
+  });
+});
+
+
 async function loadMenu() {
   const token = getToken();
 
@@ -29,24 +70,25 @@ async function loadMenu() {
     console.error("Kunde inte hämta meny:", err);
   }
 }
-
 // Delete
 async function deleteItem(id) {
   const token = getToken();
 
   try {
-    await fetch(`http://localhost:5000/api/menu/${id}`, {
+    const res = await fetch(`http://localhost:5000/api/menu/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: "Bearer " + token
       }
     });
 
+    if (!res.ok) {
+      throw new Error("Kunde inte ta bort item");
+    }
+
     loadMenu();
 
   } catch (err) {
-    console.error("Kunde inte ta bort item:", err);
+    console.error("DELETE error:", err);
   }
 }
-
-loadMenu();
