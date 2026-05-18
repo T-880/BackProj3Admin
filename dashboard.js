@@ -30,4 +30,23 @@ async function loadMenu() {
   }
 }
 
+// Delete
+async function deleteItem(id) {
+  const token = getToken();
+
+  try {
+    await fetch(`http://localhost:5000/api/menu/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: "Bearer " + token
+      }
+    });
+
+    loadMenu();
+
+  } catch (err) {
+    console.error("Kunde inte ta bort item:", err);
+  }
+}
+
 loadMenu();
