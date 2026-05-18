@@ -63,6 +63,10 @@ async function loadMenu() {
                 <p>${item.description}</p>
                 <p>${item.price} kr</p>
 
+                <p>
+                ${item.monthly_special ? "Månadens pizza" : ""}
+                </p>
+
                 <button onclick="editItem(
                     '${item._id}',
                     '${item.title}',
@@ -70,7 +74,15 @@ async function loadMenu() {
                     ${item.price}
                 )">
                     Redigera
-                </button>
+
+    </button>
+
+<button onclick="toggleMonthlySpecial(
+  '${item._id}',
+  ${item.monthly_special}
+)">
+  ${item.monthly_special ? "Ta bort special" : "Sätt som special"}
+</button>
 
                 <button onclick="deleteItem('${item._id}')">Ta bort
                 </button>
@@ -146,4 +158,70 @@ async function editItem(id, title, description, price) {
 
         console.error("UPDATE error:", err);
     }
+}
+
+async function toggleMonthlySpecial(id, currentValue) {
+
+  const token = getToken();
+
+  try {
+
+    if (currentValue) {
+
+      await fetch(`http://localhost:5000/api/menu/${id}`, {
+        method: "PUT",
+
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token
+        },
+
+        body: JSON.stringify({
+          monthly_special: false
+        })
+      });
+
+      loadMenu();
+      return;
+    }
+
+    const menuRes = await fetch("http://localhost:5000/api/menu");
+
+    const menuItems = await menuRes.json();
+
+    for (const item of menuItems) {
+
+      await fetch(`http://localhost:5000/api/menu/${item._id}`, {
+        method: "PUT",
+
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token
+        },
+
+        body: JSON.stringify({
+          monthly_special: false
+        })
+      });
+    }
+
+    await fetch(`http://localhost:5000/api/menu/${id}`, {
+      method: "PUT",
+
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token
+      },
+
+      body: JSON.stringify({
+        monthly_special: true
+      })
+    });
+
+    loadMenu();
+
+  } catch (err) {
+
+    console.error("SPECIAL error:", err);
+  }
 }
