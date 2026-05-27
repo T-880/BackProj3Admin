@@ -472,3 +472,21 @@ main h2 {
 .delete-btn:hover {
   background: #a4161a !important;
 }
+
+#createUserForm select {
+    width: 100%;
+    padding: 14px;
+    border-radius: 10px;
+    border: 1px solid #333;
+    background-color: #1a1a1a;
+    color: white;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    outline: none;
+    transition: border 0.2s ease;
+}
+
+#createUserForm select:focus {
+    border: 1px solid #e63946;
+    box-shadow: 0 0 5px rgba(230, 57, 70, 0.5);
+}
