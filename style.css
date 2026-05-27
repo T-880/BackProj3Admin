@@ -463,3 +463,12 @@ main h2 {
   font-size: 2rem;
   color: #d62828;
 }
+
+.delete-btn {
+  background: #d62828 !important;
+  color: white;
+}
+
+.delete-btn:hover {
+  background: #a4161a !important;
+}

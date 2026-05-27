@@ -19,6 +19,21 @@ window.addEventListener("DOMContentLoaded", () => {
             category: "pizza"
         };
 
+        const confirmMessage = `
+Är du säker på att du vill lägga till denna pizza på menyn, och att du stavat rätt på alla fält, samt satt korrekt pris?
+
+Namn: ${newItem.title}
+Beskrivning: ${newItem.description}
+Pris: ${newItem.price} kr
+
+OK = Lägg till
+Avbryt = Avbryt
+    `;
+
+        const confirmed = confirm(confirmMessage);
+
+        if (!confirmed) return;
+
         try {
             const res = await fetch("http://localhost:5000/api/menu", {
                 method: "POST",
@@ -84,7 +99,8 @@ async function loadMenu() {
   ${item.monthly_special ? "Ta bort Månadens Pizza" : "Sätt som Månadens Pizza"}
 </button>
 
-                <button onclick="deleteItem('${item._id}')">Ta bort
+                <button class="delete-btn" onclick="deleteItem('${item._id}')">
+                Ta bort
                 </button>
             </div>
         `).join("");
@@ -95,6 +111,11 @@ async function loadMenu() {
 }
 // Delete
 async function deleteItem(id) {
+
+    const confirmed = confirm("Är du säker på att du vill ta bort denna pizza från menyn?");
+
+    if (!confirmed) return;
+
     const token = getToken();
 
     try {
