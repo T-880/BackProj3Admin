@@ -64,7 +64,7 @@ async function loadMenu() {
                 <p>${item.price} kr</p>
 
                 <p>
-                ${item.monthly_special ? "Månadens pizza" : ""}
+                ${item.monthly_special ? "⭐MÅNADENS PIZZA" : ""}
                 </p>
 
                 <button onclick="editItem(
@@ -81,7 +81,7 @@ async function loadMenu() {
   '${item._id}',
   ${item.monthly_special}
 )">
-  ${item.monthly_special ? "Ta bort special" : "Sätt som special"}
+  ${item.monthly_special ? "Ta bort Månadens Pizza" : "Sätt som Månadens Pizza"}
 </button>
 
                 <button onclick="deleteItem('${item._id}')">Ta bort
@@ -162,66 +162,66 @@ async function editItem(id, title, description, price) {
 
 async function toggleMonthlySpecial(id, currentValue) {
 
-  const token = getToken();
+    const token = getToken();
 
-  try {
+    try {
 
-    if (currentValue) {
+        if (currentValue) {
 
-      await fetch(`http://localhost:5000/api/menu/${id}`, {
-        method: "PUT",
+            await fetch(`http://localhost:5000/api/menu/${id}`, {
+                method: "PUT",
 
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token
-        },
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: "Bearer " + token
+                },
 
-        body: JSON.stringify({
-          monthly_special: false
-        })
-      });
+                body: JSON.stringify({
+                    monthly_special: false
+                })
+            });
 
-      loadMenu();
-      return;
+            loadMenu();
+            return;
+        }
+
+        const menuRes = await fetch("http://localhost:5000/api/menu");
+
+        const menuItems = await menuRes.json();
+
+        for (const item of menuItems) {
+
+            await fetch(`http://localhost:5000/api/menu/${item._id}`, {
+                method: "PUT",
+
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: "Bearer " + token
+                },
+
+                body: JSON.stringify({
+                    monthly_special: false
+                })
+            });
+        }
+
+        await fetch(`http://localhost:5000/api/menu/${id}`, {
+            method: "PUT",
+
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + token
+            },
+
+            body: JSON.stringify({
+                monthly_special: true
+            })
+        });
+
+        loadMenu();
+
+    } catch (err) {
+
+        console.error("SPECIAL error:", err);
     }
-
-    const menuRes = await fetch("http://localhost:5000/api/menu");
-
-    const menuItems = await menuRes.json();
-
-    for (const item of menuItems) {
-
-      await fetch(`http://localhost:5000/api/menu/${item._id}`, {
-        method: "PUT",
-
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token
-        },
-
-        body: JSON.stringify({
-          monthly_special: false
-        })
-      });
-    }
-
-    await fetch(`http://localhost:5000/api/menu/${id}`, {
-      method: "PUT",
-
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token
-      },
-
-      body: JSON.stringify({
-        monthly_special: true
-      })
-    });
-
-    loadMenu();
-
-  } catch (err) {
-
-    console.error("SPECIAL error:", err);
-  }
 }
