@@ -490,3 +490,12 @@ main h2 {
     border: 1px solid #e63946;
     box-shadow: 0 0 5px rgba(230, 57, 70, 0.5);
 }
+
+#usersList {
+  margin-top: 40px;
+}
+
+#usersList .menu-item {
+  margin-bottom: 20px;
+  padding: 25px;
+}

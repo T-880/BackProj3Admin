@@ -17,6 +17,10 @@ window.addEventListener("DOMContentLoaded", () => {
 
     loadMenu();
 
+    if (userRole === "chef") {
+        loadUsers();
+    }
+
     const form = document.getElementById("createForm");
 
     form.addEventListener("submit", async (e) => {
@@ -93,6 +97,8 @@ Avbryt = Avbryt
 
             const newUser = {
                 username: document.getElementById("username").value,
+                fullName: document.getElementById("fullName").value,
+                phone: document.getElementById("phone").value,
                 password: password,
                 role: document.getElementById("role").value
             };
@@ -113,6 +119,8 @@ Avbryt = Avbryt
 
                 alert("Användare skapad!");
                 userForm.reset();
+
+                loadUsers();
 
             } catch (err) {
                 console.error("USER CREATE error:", err);
@@ -250,4 +258,89 @@ async function toggleMonthlySpecial(id, currentValue) {
     });
 
     loadMenu();
+}
+
+// laddar användare
+async function loadUsers() {
+
+    const token = getToken();
+
+    try {
+
+        const res = await fetch("http://localhost:5000/api/auth/users", {
+            headers: {
+                Authorization: "Bearer " + token
+            }
+        });
+
+        const users = await res.json();
+
+        const usersContainer = document.getElementById("usersList");
+
+        usersContainer.innerHTML = `
+            <h2>Aktiva användare</h2>
+
+            ${users.map(user => `
+                <div class="menu-item">
+
+            <p><strong>${user.username}</strong></p>
+            <p>Namn: ${user.fullName}</p>
+            <p>Tel. nummer: ${user.phone}</p>
+            <p>Roll: ${user.role}</p>
+
+                    <button
+                        class="delete-btn"
+                        onclick="deleteUser('${user._id}')"
+                    >
+                        Ta bort användare
+                    </button>
+
+                </div>
+            `).join("")}
+        `;
+
+    } catch (err) {
+
+        console.error("USER LOAD error:", err);
+    }
+}
+
+
+// Radera användare
+async function deleteUser(id) {
+
+    if (userRole !== "chef") {
+        return;
+    }
+
+    const confirmed = confirm(
+        "Är du säker på att du vill ta bort användaren?"
+    );
+
+    if (!confirmed) return;
+
+    const token = getToken();
+
+    try {
+
+        const res = await fetch(
+            `http://localhost:5000/api/auth/users/${id}`,
+            {
+                method: "DELETE",
+                headers: {
+                    Authorization: "Bearer " + token
+                }
+            }
+        );
+
+        if (!res.ok) {
+            throw new Error("Kunde inte ta bort användare");
+        }
+
+        loadUsers();
+
+    } catch (err) {
+
+        console.error("DELETE USER error:", err);
+    }
 }
