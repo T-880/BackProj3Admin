@@ -37,6 +37,7 @@ window.addEventListener("DOMContentLoaded", () => {
             title: document.getElementById("title").value,
             description: document.getElementById("description").value,
             price: document.getElementById("price").value,
+            imageUrl: document.getElementById("imageUrl").value,
             category: "pizza"
         };
 
@@ -150,7 +151,7 @@ async function loadMenu() {
                 <h3>${item.title}</h3>
                 <p>${item.description}</p>
                 <p>${item.price} kr</p>
-
+                ${item.imageUrl ? `<img src="http://localhost:5000/${item.imageUrl}" alt="${item.title}">` : ""}
                 <p>${item.monthly_special ? "⭐MÅNADENS PIZZA" : ""}</p>
 
                 <button onclick="editItem(
