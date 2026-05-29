@@ -191,7 +191,7 @@ async function deleteItem(id) {
         return;
     }
 
-    const confirmed = confirm("Är du säker?");
+    const confirmed = confirm("Är du säker på att du vill ta bort denna pizza från menyn?");
     if (!confirmed) return;
 
     const token = getToken();
