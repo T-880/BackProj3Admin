@@ -28,16 +28,16 @@
 
         <form id="createUserForm" class="create-form">
 
+            <select id="role">
+                <option value="admin">Admin</option>
+                <option value="chef">Chef</option>
+            </select>
+
             <input type="text" id="username" placeholder="Användarnamn" required />
             <input type="password" id="password" placeholder="Lösenord" required />
             <input type="password" id="confirmPassword" placeholder="Bekräfta lösenord" required />
             <input type="text" id="fullName" placeholder="Fullständigt namn" required />
             <input type="text" id="phone" placeholder="Telefonnummer" required />
-
-            <select id="role">
-                <option value="admin">Admin</option>
-                <option value="chef">Chef</option>
-            </select>
 
             <button type="submit">Skapa användare</button>
 
@@ -49,16 +49,21 @@
 
     <section class="create-section">
 
-        <h2>Lägg till en ny pizza på menyn</h2>
+        <h2>Lägg till en ny artikel på menyn</h2>
 
         <form id="createForm" class="create-form">
 
-            <input type="text" id="title" placeholder="Namn på pizza" required />
-            <input type="text" id="description" placeholder="Innehåll på pizzan (sås och ost först)" required />
+            <select id="category" required>
+                <option value="pizza">Pizza</option>
+                <option value="drink">Dryck</option>
+            </select>
+
+            <input type="text" id="title" placeholder="Namn" required />
+            <input type="text" id="description" placeholder="Beskrivning" required />
             <input type="number" id="price" placeholder="Pris" required />
             <input type="text" id="imageUrl" placeholder="Bild" />
 
-            <button type="submit">Lägg till pizza</button>
+            <button type="submit">Lägg till</button>
 
         </form>
 
@@ -68,7 +73,11 @@
 
         <h2>Aktuell meny</h2>
 
-        <div id="menuList" class="menu-grid"></div>
+        <h2>Pizzor</h2>
+        <div id="pizzaList" class="menu-grid"></div>
+
+        <h2>Drycker</h2>
+        <div id="drinkList" class="menu-grid"></div>
 
     </main>
 

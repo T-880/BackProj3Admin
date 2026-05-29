@@ -473,7 +473,8 @@ main h2 {
   background: #a4161a !important;
 }
 
-#createUserForm select {
+#createUserForm select,
+#createForm select {
     width: 100%;
     padding: 14px;
     border-radius: 10px;
@@ -486,7 +487,8 @@ main h2 {
     transition: border 0.2s ease;
 }
 
-#createUserForm select:focus {
+#createUserForm select:focus,
+#createForm select:focus {
     border: 1px solid #e63946;
     box-shadow: 0 0 5px rgba(230, 57, 70, 0.5);
 }

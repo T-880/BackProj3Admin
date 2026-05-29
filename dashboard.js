@@ -38,11 +38,11 @@ window.addEventListener("DOMContentLoaded", () => {
             description: document.getElementById("description").value,
             price: document.getElementById("price").value,
             imageUrl: document.getElementById("imageUrl").value,
-            category: "pizza"
+            category: document.getElementById("category").value
         };
 
         const confirmMessage = `
-Är du säker på att du vill lägga till denna pizza på menyn?
+Är du säker på att du vill lägga till denna artikel på menyn?
 
 Namn: ${newItem.title}
 Beskrivning: ${newItem.description}
@@ -143,39 +143,60 @@ async function loadMenu() {
 
         const data = await res.json();
 
-        const container = document.getElementById("menuList");
+        const pizzaContainer = document.getElementById("pizzaList");
+        const drinkContainer = document.getElementById("drinkList");
 
-        container.innerHTML = data.map(item => `
+        const pizzas = data.filter(item => item.category === "pizza");
+        const drinks = data.filter(item => item.category === "drink");
 
-            <div class="menu-item">
-                <h3>${item.title}</h3>
-                <p>${item.description}</p>
-                <p>${item.price} kr</p>
-                ${item.imageUrl ? `<img src="http://localhost:5000/${item.imageUrl}" alt="${item.title}">` : ""}
-                <p>${item.monthly_special ? "⭐MÅNADENS PIZZA" : ""}</p>
+        function renderItems(items) {
+            return items.map(item => `
 
-                <button onclick="editItem(
-                    '${item._id}',
-                    '${item.title}',
-                    '${item.description}',
-                    ${item.price}
-                )">
-                    Redigera
-                </button>
+        <div class="menu-item">
+            <h3>${item.title}</h3>
 
-                <button onclick="toggleMonthlySpecial(
-                    '${item._id}',
-                    ${item.monthly_special}
-                )">
-                  ${item.monthly_special ? "Ta bort Månadens Pizza" : "Sätt som Månadens Pizza"}
-                </button>
+            <p><strong>Kategori:</strong> ${item.category}</p>
 
-                <button class="delete-btn" onclick="deleteItem('${item._id}')">
-                    Ta bort
-                </button>
+            <p>${item.description}</p>
 
-            </div>
-        `).join("");
+            <p>${item.price} kr</p>
+
+            ${item.imageUrl
+                    ? `<img src="http://localhost:5000/${item.imageUrl}" alt="${item.title}">`
+                    : ""
+                }
+
+            <p>${item.monthly_special ? "⭐ MÅNADENS PIZZA" : ""}</p>
+
+            <button onclick="editItem(
+                '${item._id}',
+                '${item.title}',
+                '${item.description}',
+                ${item.price}
+            )">
+                Redigera
+            </button>
+
+            <button onclick="toggleMonthlySpecial(
+                '${item._id}',
+                ${item.monthly_special}
+            )">
+                ${item.monthly_special
+                    ? "Ta bort Månadens Pizza"
+                    : "Sätt som Månadens Pizza"}
+            </button>
+
+            <button class="delete-btn" onclick="deleteItem('${item._id}')">
+                Ta bort
+            </button>
+
+        </div>
+
+    `).join("");
+        }
+
+        pizzaContainer.innerHTML = renderItems(pizzas);
+        drinkContainer.innerHTML = renderItems(drinks);
 
     } catch (err) {
         console.error("Kunde inte hämta meny:", err);
@@ -191,7 +212,7 @@ async function deleteItem(id) {
         return;
     }
 
-    const confirmed = confirm("Är du säker på att du vill ta bort denna pizza från menyn?");
+    const confirmed = confirm("Är du säker på att du vill ta bort denna artikel från menyn?");
     if (!confirmed) return;
 
     const token = getToken();
