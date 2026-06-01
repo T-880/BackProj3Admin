@@ -2,12 +2,12 @@
 <html lang="sv">
 
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Forno Nero | Admin Dashboard</title>
 
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body class="dashboard-body">
@@ -33,11 +33,11 @@
                 <option value="chef">Chef</option>
             </select>
 
-            <input type="text" id="username" placeholder="Användarnamn" required />
-            <input type="password" id="password" placeholder="Lösenord" required />
-            <input type="password" id="confirmPassword" placeholder="Bekräfta lösenord" required />
-            <input type="text" id="fullName" placeholder="Fullständigt namn" required />
-            <input type="text" id="phone" placeholder="Telefonnummer" required />
+            <input type="text" id="username" placeholder="Användarnamn" required>
+            <input type="password" id="password" placeholder="Lösenord" required>
+            <input type="password" id="confirmPassword" placeholder="Bekräfta lösenord" required>
+            <input type="text" id="fullName" placeholder="Fullständigt namn" required>
+            <input type="text" id="phone" placeholder="Telefonnummer" required>
 
             <button type="submit">Skapa användare</button>
 
@@ -54,14 +54,15 @@
         <form id="createForm" class="create-form">
 
             <select id="category" required>
+                <option value="" selected disabled>Välj kategori</option>
                 <option value="pizza">Pizza</option>
                 <option value="drink">Dryck</option>
             </select>
 
-            <input type="text" id="title" placeholder="Namn" required />
-            <input type="text" id="description" placeholder="Beskrivning" required />
-            <input type="number" id="price" placeholder="Pris" required />
-            <input type="text" id="imageUrl" placeholder="Bild" />
+            <input type="text" id="title" placeholder="Namn" required>
+            <input type="text" id="description" placeholder="Beskrivning" required>
+            <input type="number" id="price" placeholder="Pris" required>
+            <input type="text" id="imageUrl" placeholder="Bild">
 
             <button type="submit">Lägg till</button>
 
