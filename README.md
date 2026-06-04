@@ -233,3 +233,12 @@ För att adminpanelen ska fungera korrekt måste backend vara igång på:
 
 
 http://localhost:5000
+
+
+För att logga in på sidan som admin är:
+Användarnamn: admin1
+Lösenord: admin123
+
+För att logga in på sidan som chef är:
+Användarnamn: chef
+Lösenord: chef123
