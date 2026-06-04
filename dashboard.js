@@ -219,12 +219,7 @@ async function loadMenu() {
 
 // Raderar menyobjekt
 async function deleteItem(id) {
-
-    if (userRole !== "chef") {
-        alert("Endast chef kan ta bort menyobjekt");
-        return;
-    }
-
+    
     const confirmed = confirm("Är du säker på att du vill ta bort denna artikel från menyn?");
     if (!confirmed) return;
 
