@@ -1,28 +1,35 @@
+// Kontrollerar om användaren är inloggad, annars skickas till login-sidan
 if (!getToken()) {
     window.location.href = "login.html";
 }
 
 let userRole = null;
 
+// Körs när sidan laddats klart
 window.addEventListener("DOMContentLoaded", () => {
 
+    // Hämtar JWT-token och extraherar användarroll
     const token = getToken();
     const payload = JSON.parse(atob(token.split(".")[1]));
     userRole = payload.role;
 
+    // Döljer admin-del om användaren inte är chef
     const userSection = document.getElementById("userSection");
     if (userRole !== "chef") {
         userSection.style.display = "none";
     }
 
+    // Laddar meny vid start
     loadMenu();
 
+    // Laddar användare om användaren är chef
     if (userRole === "chef") {
         loadUsers();
     }
 
     const form = document.getElementById("createForm");
 
+    // Skapa nytt menyobjekt
     form.addEventListener("submit", async (e) => {
         e.preventDefault();
 
@@ -33,6 +40,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
         const token = getToken();
 
+        // Skapar nytt menyobjekt från formulärdata
         const newItem = {
             title: document.getElementById("title").value,
             description: document.getElementById("description").value,
@@ -41,6 +49,7 @@ window.addEventListener("DOMContentLoaded", () => {
             category: document.getElementById("category").value
         };
 
+        // Bekräftelse innan objekt skapas
         const confirmMessage = `
 Är du säker på att du vill lägga till denna artikel på menyn?
 
@@ -77,6 +86,7 @@ Avbryt = Avbryt
 
     const userForm = document.getElementById("createUserForm");
 
+    // Skapa ny användare (endast chef)
     if (userForm) {
         userForm.addEventListener("submit", async (e) => {
             e.preventDefault();
@@ -91,11 +101,13 @@ Avbryt = Avbryt
             const password = document.getElementById("password").value;
             const confirmPassword = document.getElementById("confirmPassword").value;
 
+            // Validerar att lösenord matchar
             if (password !== confirmPassword) {
                 alert("Lösenorden matchar inte");
                 return;
             }
 
+            // Skapar användarobjekt
             const newUser = {
                 username: document.getElementById("username").value,
                 fullName: document.getElementById("fullName").value,
@@ -130,6 +142,7 @@ Avbryt = Avbryt
     }
 });
 
+// Hämtar och visar meny från API
 async function loadMenu() {
 
     const token = getToken();
@@ -149,6 +162,7 @@ async function loadMenu() {
         const pizzas = data.filter(item => item.category === "pizza");
         const drinks = data.filter(item => item.category === "drink");
 
+        // Renderar menyobjekt till HTML
         function renderItems(items) {
             return items.map(item => `
 
@@ -203,8 +217,7 @@ async function loadMenu() {
     }
 }
 
-
-// Delete
+// Raderar menyobjekt
 async function deleteItem(id) {
 
     if (userRole !== "chef") {
@@ -227,8 +240,7 @@ async function deleteItem(id) {
     loadMenu();
 }
 
-
-// Edit
+// Redigerar menyobjekt
 async function editItem(id, title, description, price) {
 
     if (!["chef", "admin"].includes(userRole)) {
@@ -258,7 +270,7 @@ async function editItem(id, title, description, price) {
     loadMenu();
 }
 
-
+// Växlar "månadens special"
 async function toggleMonthlySpecial(id, currentValue) {
 
     if (!["chef", "admin"].includes(userRole)) {
@@ -282,7 +294,7 @@ async function toggleMonthlySpecial(id, currentValue) {
     loadMenu();
 }
 
-// laddar användare
+// Laddar användare från API
 async function loadUsers() {
 
     const token = getToken();
@@ -327,8 +339,7 @@ async function loadUsers() {
     }
 }
 
-
-// Radera användare
+// Raderar användare
 async function deleteUser(id) {
 
     if (userRole !== "chef") {

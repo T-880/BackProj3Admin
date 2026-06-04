@@ -12,6 +12,7 @@
 
 <body class="dashboard-body">
 
+    <!-- Header med titel och utloggningsknapp -->
     <header class="dashboard-header">
 
         <h1>Forno Nero Admin</h1>
@@ -22,12 +23,14 @@
 
     </header>
 
+    <!-- Sektion för att skapa nya användare -->
     <section id="userSection" class="create-section">
 
         <h2>Skapa ny användare</h2>
 
         <form id="createUserForm" class="create-form">
 
+            <!-- Rollval för användaren -->
             <select id="role">
                 <option value="admin">Admin</option>
                 <option value="chef">Chef</option>
@@ -43,16 +46,19 @@
 
         </form>
 
+        <!-- Lista över befintliga användare -->
         <div id="usersList"></div>
 
     </section>
 
+    <!-- Sektion för att skapa nya menyartiklar -->
     <section class="create-section">
 
         <h2>Lägg till en ny artikel på menyn</h2>
 
         <form id="createForm" class="create-form">
 
+            <!-- Kategorival för menyobjekt -->
             <select id="category" required>
                 <option value="" selected disabled>Välj kategori</option>
                 <option value="pizza">Pizza</option>
@@ -70,6 +76,7 @@
 
     </section>
 
+    <!-- Huvudinnehåll: visar aktuell meny -->
     <main class="dashboard-main">
 
         <h2>Aktuell meny</h2>
@@ -82,9 +89,11 @@
 
     </main>
 
+    <!-- JavaScript för autentisering och dashboardlogik -->
     <script src="auth.js"></script>
     <script src="dashboard.js"></script>
 
+    <!-- Logout-funktion kopplad till knapp -->
     <script>
         document.getElementById("logoutBtn").addEventListener("click", logout);
     </script>
